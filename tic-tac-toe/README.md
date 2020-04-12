@@ -2,21 +2,7 @@
 
 > Tic Tac Toe indoor game for web
 
-## Build Setup
 
-```bash
-# install dependencies
-$ yarn install
+### Questions
 
-# serve with hot reload at localhost:3000
-$ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
-```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+* [Should I commit yarn.lock file?](https://stackoverflow.com/questions/39990017/should-i-commit-the-yarn-lock-file-and-what-is-it-for)
