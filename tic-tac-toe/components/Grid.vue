@@ -1,7 +1,8 @@
 <template>
   <v-card>
-      <v-card-title>Tic Tac Toe</v-card-title>
-      <v-card-title>Player <span v-if="player">  [2] </span> <span v-else> [1] </span> Turn</v-card-title>
+      <v-card-title color="primary">
+        Player <span v-if="player">  [2] </span> <span v-else> [1] </span> Turn
+      </v-card-title>
       <v-card-subtitle>{{ dimension }} {{ selected }} </v-card-subtitle>
       <v-card-text>
         <!-- Game Grid -->
@@ -26,7 +27,7 @@
 
       </v-card-text>
       <v-card-actions>
-        <v-btn color="warning" @click="resetData">Reser values</v-btn>
+        <v-btn color="error" @click="resetData">Reset game</v-btn>
         <v-btn color="success" @click="player = !player">done</v-btn>
       </v-card-actions>
   {{ data }}
