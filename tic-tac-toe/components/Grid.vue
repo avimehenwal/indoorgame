@@ -1,6 +1,7 @@
 <template>
   <v-card>
       <v-card-title>Tic Tac Toe</v-card-title>
+      <v-card-title>Player <span v-if="player">  [2] </span> <span v-else> [1] </span> Turn</v-card-title>
       <v-card-subtitle>{{ dimension }} {{ selected }} </v-card-subtitle>
       <v-card-text>
         <!-- Game Grid -->
@@ -8,7 +9,7 @@
           <v-row no-gutters v-for="row in dimension" :key="row">
             <v-col v-for="col in dimension" :key="col" cols="12" sm="4" >
               <v-card class="pa-2" outlined tile >
-                  <v-btn block tile @click="toggleValue(row, col)">
+                  <v-btn block tile text @click="toggleValue(row, col)">
                     <div v-if="data[row-1][col-1]">
                       <v-icon large> {{ tic }} </v-icon>
                     </div>
@@ -25,8 +26,8 @@
 
       </v-card-text>
       <v-card-actions>
-        <v-btn>Player 1/2 Turn</v-btn>
-        <v-btn @click="resetData">Reser values</v-btn>
+        <v-btn color="warning" @click="resetData">Reser values</v-btn>
+        <v-btn color="success" @click="player = !player">done</v-btn>
       </v-card-actions>
   {{ data }}
   <v-btn @click="increment"> {{ count }} ADD+ </v-btn>
@@ -49,7 +50,8 @@ export default {
     selected: null,
     data: null,
     tic: 'mdi-multiplication',
-    tac: 'mdi-null'
+    tac: 'mdi-null',
+    player: false
   }),
   methods: {
     resetData () {
@@ -75,6 +77,12 @@ export default {
   },
   created () {
     this.resetData()
+  },
+  computed: {
+    getValue (row, col) {
+      // Cannot read property 'NaN' of undefined
+      return this.data[row-1][col-1]
+    }
   }
 }
 </script>
