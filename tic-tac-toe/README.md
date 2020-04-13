@@ -8,6 +8,10 @@
 * Match number, coule be more than single match
 * Winner Conditions / Draw
 * isHighlighted
+* How to switch player?
+* Track active player
+* Scoring?
+* Player move timeout?
 
 ### Questions
 
