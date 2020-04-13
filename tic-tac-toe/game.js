@@ -3,12 +3,14 @@
   false = Player1
   true = Player2
 */
+var permutations = require('permutation');
 
 export const Game = {
   created () {
     this.initPlayer()
     this.assignPLayerSymbols()
-    this.resetGame()
+    this.resetGame(),
+    this.winningSetGenerator()
   },
   data: () => ({
     inProgress: false, // enable controls
@@ -19,15 +21,17 @@ export const Game = {
     matches: 0,
     concludeGame: false,
     cells: {},
-    winningSets: [
-      '012',
-      '345',
-      '678',
-      '036',
-      '147',
-      '256',
-      '246',
-      '048',
+    permutation: permutations('abc'),
+    winningPermutations: [],
+    winningCase: [
+      '111213',
+      '212223',
+      '313233',
+      '112131',
+      '122232',
+      '132333',
+      '112233',
+      '132231'
     ]
   }),
   methods: {
@@ -89,13 +93,16 @@ export const Game = {
       this.movesMade++
     },
     setCell (index) {
-      this.cells[index].symbol = this.players[this.getActivePlayerIndex].symbol
-      this.players[this.getActivePlayerIndex].moves.push(index)
-      // console.log(index, this.players[this.getActivePlayerIndex])
-      // check winning condition
-      console.log('SET', index, this.cells[index])
-      this.isWinner()
-      this.switchPlayer()
+      if (!this.isCellDisabled(index)) {
+        this.cells[index].symbol = this.players[this.getActivePlayerIndex].symbol
+        this.cells[index].color = this.players[this.getActivePlayerIndex].color
+        this.players[this.getActivePlayerIndex].moves.push(index)
+        // console.log(index, this.players[this.getActivePlayerIndex])
+        // check winning condition
+        console.log('SET', index, this.cells[index])
+        this.isWinner()
+        this.switchPlayer()
+      }
     },
     isCellDisabled (index) {
       if (this.cells[index].symbol == null) {
@@ -105,17 +112,39 @@ export const Game = {
       }
     },
     isWinner () {
-      let moves = this.players[this.getActivePlayerIndex].moves.sort().join('')
+      let moves = this.players[this.getActivePlayerIndex].moves.join('')
+      console.log('moves', moves)
       if (moves.length > 2) {
         console.log('Enter condition')
-        for(let i = 0; i < this.winningSets.length; i++) {
-          console.log('player', this.getActivePlayerIndex, 'test winningset', this.winningSets[i], '===', moves)
-          if (moves.includes(this.winningSets[i])) {
+        for(let i = 0; i < this.winningPermutations.length; i++) {
+          let item = this.winningPermutations[i]
+          console.log('player', this.getActivePlayerIndex, 'test winningset', item, '===', moves)
+          if (moves.includes(item)) {
             return this.concludeGame = true
           }
         }
       }
+    },
+    winningSetGenerator () {
+      for(let i=0; i < this.winningCase.length; i++) {
+        let item = this.winningCase[i]
+        let a = item.substr(0,2)
+        let b = item.substr(2,2)
+        let c = item.substr(4,2)
+        // console.log('SUBSTR',item,'=>', a,b,c)
+        let canonicalPermutations = permutations('abc')
+        // console.log('CAN', canonicalPermutations)
+        const regex = /a/gi
+        for(let j=0; j<canonicalPermutations.length; j++) {
+          let item = canonicalPermutations[j]
+          var newitem = item.replace(/a/, a).replace(/b/, b).replace(/c/, c)
+          // console.log("REPLACE", item, newitem)
+          this.winningPermutations.push(newitem)
+        }
+      }
+      console.log(this.winningPermutations)
     }
+
   },
   computed: {
     getActivePlayerIndex () {

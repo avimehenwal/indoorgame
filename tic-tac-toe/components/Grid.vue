@@ -12,6 +12,7 @@
       Player 1
       <v-icon x-large :color="players[1].color">{{players[1].symbol}}</v-icon>
       Player 2
+      <!-- {{ players[1]}} -->
       <v-chip color="yellow"> <strong> {{ movesMade }} </strong></v-chip> Moves
     </v-container>
     <v-card-text>
@@ -24,13 +25,19 @@
             <v-card
               :id="getID(i, j)"
               :height="getHeight" outlined hover
-              @click="setCell(getID(i, j))"
+              :disabled="concludeGame"
             >
-              <div class="text-center pt-2">
-                <!-- <v-icon size="65"> {{ cells[getID(i, j)].symbol }} </v-icon> -->
-                {{ getID(i, j) }}
-                {{ cells[getID(i, j)] }}
-              </div>
+              <v-btn
+                height="100%"
+                width="100%"
+                class="text-center"
+                text
+                @click="setCell(getID(i, j))"
+              >
+                <v-icon x-large :color="cells[getID(i, j)].color"> {{ cells[getID(i, j)].symbol }} </v-icon>
+                <!-- {{ getID(i, j) }}
+                {{ cells[getID(i, j)] }} -->
+              </v-btn>
             </v-card>
           </v-col>
         </v-row>
@@ -42,6 +49,7 @@
       <v-btn x-large color="error" @click="resetGame()">Reset game</v-btn>
     </v-card-actions>
   </v-card>
+  {{permutation}}
   </v-container>
 </template>
 
