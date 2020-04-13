@@ -21,7 +21,8 @@ export const Game = {
     matches: 0,
     concludeGame: false,
     cells: {},
-    permutation: permutations('abc'),
+    victorySet: null,
+    victoryColor: 'yellow',
     winningPermutations: [],
     winningCase: [
       '111213',
@@ -120,6 +121,11 @@ export const Game = {
           let item = this.winningPermutations[i]
           console.log('player', this.getActivePlayerIndex, 'test winningset', item, '===', moves)
           if (moves.includes(item)) {
+            this.victorySet = item
+            // highlight winning set
+            this.cells[item.substr(0,2)].bg = this.victoryColor
+            this.cells[item.substr(2,2)].bg = this.victoryColor
+            this.cells[item.substr(4,2)].bg = this.victoryColor
             return this.concludeGame = true
           }
         }

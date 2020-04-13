@@ -2,7 +2,9 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/5def22c7-a167-4745-8c5c-a0c1f5423124/deploy-status)](https://app.netlify.com/sites/peaceful-minsky-f655a4/deploys)
 
-![demo](demo.png)
+![demo on mobile](demo2.png)
+
+![demo on desktop](demo.png)
 
 ### External Links
 

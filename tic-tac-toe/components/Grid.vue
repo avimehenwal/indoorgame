@@ -1,9 +1,9 @@
 <template>
-  <v-container>
+  <v-container height="90vh">
   <v-alert type="success" v-if="concludeGame">
     Player {{getActivePlayerIndex}} {{ players[getActivePlayerIndex].name }} WON!
   </v-alert>
-  <v-card color="primary lighten-5">
+  <v-card color="primary lighten-5" max-height="800">
     <v-container class="display-1 text-center" color="blue">
       Player {{ getActivePlayerIndex }}'s Turn
     </v-container>
@@ -19,13 +19,15 @@
 
       <!-- Game Grid -->
       {{ this.$vuetify.breakpoint.name }} {{getHeight}}
-      <v-responsive fill-height fluid>
+      <v-responsive fluid>
         <v-row v-for="j in row" :key="j" justify="center" align="center">
           <v-col v-for="i in col" :key="i">
             <v-card
               :id="getID(i, j)"
               :height="getHeight" outlined hover
               :disabled="concludeGame"
+              :color="cells[getID(i, j)].bg"
+              flat
             >
               <v-btn
                 height="100%"
@@ -49,7 +51,6 @@
       <v-btn x-large color="error" @click="resetGame()">Reset game</v-btn>
     </v-card-actions>
   </v-card>
-  {{permutation}}
   </v-container>
 </template>
 
@@ -78,9 +79,9 @@ export default {
     col: 3,
     resolution: {
       xs: 80,
-      sm: 150,
-      md: 150,
-      lg: 200
+      sm: 100,
+      md: 100,
+      lg: 100
     }
   }),
   computed: {
