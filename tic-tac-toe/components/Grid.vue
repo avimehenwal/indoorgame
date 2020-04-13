@@ -4,32 +4,39 @@
     Player {{getActivePlayerIndex}} {{ players[getActivePlayerIndex].name }} WON!
   </v-alert>
   <v-card color="primary lighten-5">
-    <v-card-title>
-      Player {{ getActivePlayerIndex }} Turn
-    </v-card-title>
-    <v-card-subtitle>Moves {{ movesMade }}
-      <v-icon>{{players[0].symbol}}</v-icon>
-      Player1
-      {{ players[0].moves }}
-      <v-icon>{{players[1].symbol}}</v-icon>
-      Player2
-      {{ players[1].moves }}
-    </v-card-subtitle>
+    <v-container class="display-1 text-center" color="blue">
+      Player {{ getActivePlayerIndex }}'s Turn
+    </v-container>
+    <v-container class="text-center">
+      <v-icon x-large :color="players[0].color">{{players[0].symbol}}</v-icon>
+      Player 1
+      <v-icon x-large :color="players[1].color">{{players[1].symbol}}</v-icon>
+      Player 2
+      <v-chip color="yellow"> <strong> {{ movesMade }} </strong></v-chip> Moves
+    </v-container>
     <v-card-text>
+
       <!-- Game Grid -->
-      <v-container>
-        <v-row no-gutters>
-          <v-col v-for="(col, index) in 9" :key="col" cols="12" sm="4" >
-            <v-card outlined>
-                <v-btn block tile text @click="setCell(index)" :disabled="isCellDisabled(index)">
-                  <v-icon> {{ cells[index].symbol }} </v-icon>
-                </v-btn>
+      {{ this.$vuetify.breakpoint.name }} {{getHeight}}
+      <v-responsive fill-height fluid>
+        <v-row v-for="j in row" :key="j" justify="center" align="center">
+          <v-col v-for="i in col" :key="i">
+            <v-card
+              :id="getID(i, j)"
+              :height="getHeight" outlined hover
+              @click="setCell(getID(i, j))"
+            >
+              <div class="text-center pt-2">
+                <!-- <v-icon size="65"> {{ cells[getID(i, j)].symbol }} </v-icon> -->
+                {{ getID(i, j) }}
+                {{ cells[getID(i, j)] }}
+              </div>
             </v-card>
           </v-col>
         </v-row>
+      </v-responsive>
 
-      </v-container>
-
+      {{ clicked }}
     </v-card-text>
     <v-card-actions>
       <v-btn x-large color="error" @click="resetGame()">Reset game</v-btn>
@@ -40,6 +47,7 @@
 
 <script>
 import { Game } from '@/game.js'
+// import Cell from '@/components/cell.vue'
 
 export default {
   props: {
@@ -49,10 +57,37 @@ export default {
     },
   },
   mixins:[Game],
+  components: {
+    // Cell
+  },
   data: () => ({
-    tic: 'mdi-multiplication',
-    tac: 'mdi-null',
-    count: 0
-  })
+    tic: 'mdi-moon-full',
+    tac: 'mdi-close-thick',
+    p1color: 'green',
+    p2color: 'red',
+    clicked: null,
+    row: 3,
+    col: 3,
+    resolution: {
+      xs: 80,
+      sm: 150,
+      md: 150,
+      lg: 200
+    }
+  }),
+  computed: {
+    getHeight () {
+      return this.resolution[this.$vuetify.breakpoint.name]
+    }
+  },
+  methods: {
+    increment (id) {
+      this.clicked = id
+    },
+    getID (i, j) {
+      return String(j) + String(i)
+    }
+  }
+
 }
 </script>

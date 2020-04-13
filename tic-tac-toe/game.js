@@ -15,10 +15,10 @@ export const Game = {
     winner: null,
     activePlayer: false, // 1
     movesMade: 0,
-    cells: [],
     players: [],
     matches: 0,
     concludeGame: false,
+    cells: {},
     winningSets: [
       '012',
       '345',
@@ -41,14 +41,29 @@ export const Game = {
       this.concludeGame = false
       this.players[0].moves = []
       this.players[1].moves = []
-      for(let i=0; i<9; i++) {
-        let cell = {}
-        this.cells.push(cell)
-        this.cells[i].id = i
-        this.cells[i].symbol = null
-        this.cells[i].isHighlighted = null
+      this.cells = {
+        11: { symbol: null },
+        12: { symbol: null },
+        13: { symbol: null },
+        21: { symbol: null },
+        22: { symbol: null },
+        23: { symbol: null },
+        31: { symbol: null },
+        32: { symbol: null },
+        33: { symbol: null },
       }
-      // console.log(this.cells)
+      // let cell_entry = {
+      //   symbol: null,
+      //   isHighlighted: null
+      // }
+      // for(let i=1; i <= this.row; i++) {
+      //   for(let j=1; j <= this.col; j++) {
+      //     // console.log(i,j)
+      //     // console.log(this.cells)
+      //     this.cells[this.getID(i, j)] = cell_entry
+      //   }
+      // }
+      console.log(this.cells)
     },
     initPlayer () {
       for(var i=0; i<2; i++) {
@@ -56,7 +71,8 @@ export const Game = {
           name: null,
           symbol: null,
           wins: 0,
-          moves: []
+          moves: [],
+          color: null
         }
         this.players.push(Player)
       }
@@ -65,6 +81,8 @@ export const Game = {
     assignPLayerSymbols () {
       this.players[0].symbol = this.tic
       this.players[1].symbol = this.tac
+      this.players[0].color = this.p1color
+      this.players[1].color = this.p2color
     },
     switchPlayer () {
       this.activePlayer = !this.activePlayer
@@ -75,6 +93,7 @@ export const Game = {
       this.players[this.getActivePlayerIndex].moves.push(index)
       // console.log(index, this.players[this.getActivePlayerIndex])
       // check winning condition
+      console.log('SET', index, this.cells[index])
       this.isWinner()
       this.switchPlayer()
     },
