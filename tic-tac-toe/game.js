@@ -17,7 +17,18 @@ export const Game = {
     movesMade: 0,
     cells: [],
     players: [],
-    matches: 0
+    matches: 0,
+    concludeGame: false,
+    winningSets: [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 6],
+      [0, 4, 8],
+      [2, 4, 6]
+    ]
   }),
   methods: {
     startGame () {
@@ -27,6 +38,7 @@ export const Game = {
       this.cells = []
       console.log('reset Game')
       this.movesMade = 0
+      this.resetMoves()
       for(let i=0; i<9; i++) {
         let cell = {}
         this.cells.push(cell)
@@ -41,11 +53,16 @@ export const Game = {
         let Player = {
           name: null,
           symbol: null,
-          wins: 0
+          wins: 0,
+          moves: []
         }
         this.players.push(Player)
       }
       // console.log(this.players)
+    },
+    resetMoves () {
+      // this.players[0].moves = []
+      // this.players[1].moves = []
     },
     assignPLayerSymbols () {
       this.players[0].symbol = this.tic
@@ -56,9 +73,18 @@ export const Game = {
       this.movesMade++
     },
     setCell (index) {
-      console.log(index, this.players[this.getActivePlayerIndex].symbol)
       this.cells[index].symbol = this.players[this.getActivePlayerIndex].symbol
+      this.players[this.getActivePlayerIndex].moves.push(index)
+      // console.log(index, this.players[this.getActivePlayerIndex])
       this.switchPlayer()
+      // check winning condition
+    },
+    isCellDisabled (index) {
+      if (this.cells[index].symbol == null) {
+        return false
+      } else {
+        return true
+      }
     }
   },
   computed: {
@@ -69,12 +95,24 @@ export const Game = {
         return 0
       }
     },
-    isCellDisabled (index) {
-      if (this.cells[index].symbol == null) {
-        return false
-      } else {
-        return true
+    isWinner () {
+      console.log(this.players[this.getActivePlayerIndex].moves.length)
+      if (this.players[this.getActivePlayerIndex].moves.length > 1) {
+        console.log('Enter condition')
+        console.log(this.players[this.getActivePlayerIndex].moves.sort())
+        for(let i = 0; i < this.winningSets.length; i++) {
+          console.log(this.winningSets[i].sort())
+          if (this.players[this.getActivePlayerIndex].moves.sort() == this.winningSets[i].sort()) {
+            return true
+          }
+          else {
+            return false
+          }
+        }
       }
+    },
+    activePlayerMovesCount () {
+      return this.players[this.getActivePlayerIndex].moves.length
     }
   }
 }
