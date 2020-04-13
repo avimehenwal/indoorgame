@@ -12,11 +12,10 @@
       </v-container>
     </v-content>
 
-    <v-footer
-      :fixed="fixed"
-      app
-    >
+    <v-footer :fixed="fixed" app >
       <span>&copy; {{ new Date().getFullYear() }}</span>
+      <v-spacer></v-spacer>
+      <span><a href="https://github.com/avimehenwal" target="_blank">@avimehenwal</a></span>
     </v-footer>
   </v-app>
 </template>

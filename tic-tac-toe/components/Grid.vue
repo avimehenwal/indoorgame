@@ -18,7 +18,7 @@
     <v-card-text>
 
       <!-- Game Grid -->
-      {{ this.$vuetify.breakpoint.name }} {{getHeight}}
+      <!-- {{ this.$vuetify.breakpoint.name }} {{getHeight}} -->
       <v-responsive fluid>
         <v-row v-for="j in row" :key="j" justify="center" align="center">
           <v-col v-for="i in col" :key="i">
