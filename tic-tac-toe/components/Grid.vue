@@ -1,7 +1,7 @@
 <template>
   <v-container>
   <v-alert type="success" v-if="concludeGame">
-    Player {{ players[getActivePlayerIndex].name }} WON! {{getActivePlayerIndex}}
+    Player {{getActivePlayerIndex}} {{ players[getActivePlayerIndex].name }} WON!
   </v-alert>
   <v-card color="primary lighten-5">
     <v-card-title>
