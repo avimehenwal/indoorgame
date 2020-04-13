@@ -6,9 +6,9 @@
 
 export const Game = {
   created () {
-    this.resetGame()
     this.initPlayer()
     this.assignPLayerSymbols()
+    this.resetGame()
   },
   data: () => ({
     inProgress: false, // enable controls
@@ -20,14 +20,14 @@ export const Game = {
     matches: 0,
     concludeGame: false,
     winningSets: [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 6],
-      [0, 4, 8],
-      [2, 4, 6]
+      '012',
+      '345',
+      '678',
+      '036',
+      '147',
+      '256',
+      '246',
+      '048',
     ]
   }),
   methods: {
@@ -38,7 +38,9 @@ export const Game = {
       this.cells = []
       console.log('reset Game')
       this.movesMade = 0
-      this.resetMoves()
+      this.concludeGame = false
+      this.players[0].moves = []
+      this.players[1].moves = []
       for(let i=0; i<9; i++) {
         let cell = {}
         this.cells.push(cell)
@@ -60,10 +62,6 @@ export const Game = {
       }
       // console.log(this.players)
     },
-    resetMoves () {
-      // this.players[0].moves = []
-      // this.players[1].moves = []
-    },
     assignPLayerSymbols () {
       this.players[0].symbol = this.tic
       this.players[1].symbol = this.tac
@@ -76,14 +74,27 @@ export const Game = {
       this.cells[index].symbol = this.players[this.getActivePlayerIndex].symbol
       this.players[this.getActivePlayerIndex].moves.push(index)
       // console.log(index, this.players[this.getActivePlayerIndex])
-      this.switchPlayer()
       // check winning condition
+      this.isWinner()
+      this.switchPlayer()
     },
     isCellDisabled (index) {
       if (this.cells[index].symbol == null) {
         return false
       } else {
         return true
+      }
+    },
+    isWinner () {
+      let moves = this.players[this.getActivePlayerIndex].moves.sort().join('')
+      if (moves.length > 2) {
+        console.log('Enter condition')
+        for(let i = 0; i < this.winningSets.length; i++) {
+          console.log('player', this.getActivePlayerIndex, 'test winningset', this.winningSets[i], '===', moves)
+          if (moves.includes(this.winningSets[i])) {
+            return this.concludeGame = true
+          }
+        }
       }
     }
   },
@@ -93,22 +104,6 @@ export const Game = {
         return 1
       } else {
         return 0
-      }
-    },
-    isWinner () {
-      console.log(this.players[this.getActivePlayerIndex].moves.length)
-      if (this.players[this.getActivePlayerIndex].moves.length > 1) {
-        console.log('Enter condition')
-        console.log(this.players[this.getActivePlayerIndex].moves.sort())
-        for(let i = 0; i < this.winningSets.length; i++) {
-          console.log(this.winningSets[i].sort())
-          if (this.players[this.getActivePlayerIndex].moves.sort() == this.winningSets[i].sort()) {
-            return true
-          }
-          else {
-            return false
-          }
-        }
       }
     },
     activePlayerMovesCount () {
